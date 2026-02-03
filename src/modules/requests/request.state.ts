@@ -1,4 +1,4 @@
-import { RequestStatus } from "../../../generated/prisma/client";
+import { RequestStatus } from "../../../generated/prisma/client.js";
 
 export const allowedTransitions: Record<RequestStatus, RequestStatus[]> = {
   REQUESTED: ["ACCEPTED", "CANCELLED"],
