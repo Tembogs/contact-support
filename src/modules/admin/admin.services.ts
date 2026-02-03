@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma";
+import prisma from "../../config/prisma.js";
 import { Role } from "../../../generated/prisma/client";
 import { Prisma } from "../../../generated/prisma/client";
 

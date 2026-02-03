@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import prisma from "../../config/prisma";
+import prisma from "../../config/prisma.js";
 // Use Namespace Import for enums too
 import * as EnumsModule from "../../../generated/prisma/enums";
 
