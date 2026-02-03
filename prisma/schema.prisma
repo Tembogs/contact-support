@@ -1,0 +1,104 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  name            String?
+  passwordHash    String
+  role            Role             @default(USER)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  isOnline        Boolean          @default(false)
+  expertProfile   ExpertProfile?
+  messages        Message[]
+  reviewsReceived Review[]         @relation("ExpertReviews")
+  reviewsGiven    Review[]         @relation("UserReviews")
+  assigned        SupportRequest[] @relation("ExpertRequests")
+  requests        SupportRequest[] @relation("UserRequests")
+}
+
+model Skill {
+  id       String        @id @default(uuid())
+  name     String
+  expertId String
+  expert   ExpertProfile @relation(fields: [expertId], references: [id])
+}
+
+model ExpertProfile {
+  id          String  @id @default(uuid())
+  userId      String  @unique
+  bio         String
+  isAvailable Boolean @default(true)
+  rating      Float   @default(0)
+  user        User    @relation(fields: [userId], references: [id])
+  skills      Skill[]
+}
+
+model SupportRequest {
+  id         String        @id @default(uuid())
+  userId     String
+  expertId   String?
+  status     RequestStatus
+  createdAt  DateTime      @default(now())
+  acceptedAt DateTime?
+  closedAt   DateTime?
+  messages   Message[]
+  review     Review?
+  session    Session?
+  expert     User?         @relation("ExpertRequests", fields: [expertId], references: [id])
+  user       User          @relation("UserRequests", fields: [userId], references: [id])
+}
+
+model Review {
+  id         String         @id @default(uuid())
+  rating     Int
+  comment    String?
+  requestId  String         @unique
+  expertId   String
+  reviewerId String
+  createdAt  DateTime       @default(now())
+  expert     User           @relation("ExpertReviews", fields: [expertId], references: [id])
+  request    SupportRequest @relation(fields: [requestId], references: [id])
+  reviewer   User           @relation("UserReviews", fields: [reviewerId], references: [id])
+}
+
+model Message {
+  id        String         @id @default(uuid())
+  requestId String
+  senderId  String
+  content   String
+  createdAt DateTime       @default(now())
+  request   SupportRequest @relation(fields: [requestId], references: [id])
+  sender    User           @relation(fields: [senderId], references: [id])
+}
+
+model Session {
+  id        String         @id @default(uuid())
+  requestId String         @unique
+  startedAt DateTime       @default(now())
+  endedAt   DateTime?
+  request   SupportRequest @relation(fields: [requestId], references: [id])
+}
+
+enum Role {
+  USER
+  EXPERT
+  ADMIN
+}
+
+enum RequestStatus {
+  REQUESTED
+  ACCEPTED
+  ACTIVE
+  CLOSED
+  CANCELLED
+  COMPLETED
+}
