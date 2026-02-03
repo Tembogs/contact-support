@@ -5,8 +5,7 @@
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,
-    // "verbatimModuleSyntax": true,
-    "allowImportingTsExtensions": true, 
-    "noEmit": true
+    "outDir": "dist",           
+    "noEmit": false,
   }
 }
