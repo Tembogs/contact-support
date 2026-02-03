@@ -1,5 +1,5 @@
 import prisma from "../../config/prisma.js";
-import { Prisma } from "../../../generated/prisma/client.js";
+import { Prisma } from "../../generated/prisma/client.js";
 
 export class ProfileService {
   // Update expert bio and skills
