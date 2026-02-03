@@ -1,29 +1,27 @@
-// {
-//   "compilerOptions": {
-//     "module": "ESNext",
-//     "moduleResolution": "bundler", 
-//     "target": "ES2023",
-//     "strict": true,
-//     "esModuleInterop": true,
-//     "outDir": "dist",  
-//     "rootDir": ".",         
-//     "noEmit": false,
-//     "include": ["src"],
-//   "exclude": ["node_modules", "dist"]
-//   }
-// }
 {
   "compilerOptions": {
-    "target": "ES2023",
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "rootDir": ".",
-    "outDir": "dist",
+    "moduleResolution": "bundler", 
+    "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-     "allowSyntheticDefaultImports": true,
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+    "outDir": "dist",  
+    "rootDir": ".",         
+    "noEmit": false,
+  }
 }
+// {
+//   "compilerOptions": {
+//     "target": "ES2023",
+//     "module": "ESNext",
+//     "moduleResolution": "bundler",
+//     "rootDir": ".",
+//     "outDir": "dist",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+//      "allowSyntheticDefaultImports": true,
+//   },
+//   "include": ["src"],
+//   "exclude": ["node_modules", "dist"]
+// }
