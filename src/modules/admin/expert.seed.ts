@@ -1,7 +1,7 @@
 // src/modules/admin/expert.seed.ts
 import 'dotenv/config';
 import { prisma } from '../../config/prisma.js';
-import { Role } from '../../../generated/prisma/enums.js';
+import { Role } from '../../../generated/prisma/enums';
 import bcrypt from 'bcryptjs';
 
 async function main() {
