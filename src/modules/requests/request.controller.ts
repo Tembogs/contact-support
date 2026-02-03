@@ -51,8 +51,8 @@ export class RequestController {
       }
 
   static async transition(req: AuthRequest, res:Response){
-    const {id} = req.params;
-    const {status} = req.body;
+    const id = req.params.id as string;
+    const { status } = req.body;
 
     const updated = await RequestService.transitionRequest(
       id,
@@ -71,7 +71,7 @@ export class RequestController {
 
 static async accept(req: AuthRequest, res: Response) {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     // 1. Update the request
     const updated = await RequestService.acceptRequest(id, req.user!.userId);
 
@@ -100,7 +100,7 @@ static async accept(req: AuthRequest, res: Response) {
 
 static async close(req: AuthRequest, res: Response) {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     
     // 1. Your existing service call
     const updated = await RequestService.closeRequest(id, req.user!.userId);
@@ -121,7 +121,7 @@ static async close(req: AuthRequest, res: Response) {
   }
 }
 static async reject(req: AuthRequest, res: Response) {
-  const { id } = req.params;
+  const id = req.params.id as string;
   const updated = await RequestService.rejectRequest(id);
   res.json(updated);
 }
@@ -153,7 +153,7 @@ static async getAccepted(req: AuthRequest, res: Response) {
 
   static async cancel(req: AuthRequest, res: Response) {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const userId = req.user!.userId;
 
       // 1. Update status in DB via your Service
