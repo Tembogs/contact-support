@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import prisma from "../../config/prisma.js";
 // Use Namespace Import for enums too
-import * as EnumsModule from "../../generated/prisma/enums.js";
+import * as EnumsModule from "../../../generated/prisma/enums.js";
 
 const { Role } = EnumsModule as any;
 import bcrypt from 'bcryptjs';
