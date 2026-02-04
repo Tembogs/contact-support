@@ -1,5 +1,5 @@
 import prisma from "../../config/prisma.js"
-import { RequestStatus,Prisma } from "../../../generated/prisma/client"
+import { RequestStatus,Prisma } from "../../../generated/prisma/client.js"
 import { allowedTransitions } from "./request.state.js"
 
 export class RequestService{
