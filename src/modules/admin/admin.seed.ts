@@ -1,9 +1,8 @@
 import 'dotenv/config';
 import prisma from "../../config/prisma.js";
 // Use Namespace Import for enums too
-import * as EnumsModule from "../../../generated/prisma/enums";
+import { Role } from "@prisma/client";
 
-const { Role } = EnumsModule as any;
 import bcrypt from 'bcryptjs';
  async function main() {
   console.log("🚀 Starting admin seeding...");
