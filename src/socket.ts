@@ -8,6 +8,7 @@ export function intheSocket(server: http.Server) {
   const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
+    'https://chatroom-xi-lac.vercel.app',
     process.env.FRONTEND_URL || 'http://localhost:3000'
   ];
 
@@ -22,7 +23,8 @@ export function intheSocket(server: http.Server) {
       },
       methods: ["GET", "POST"],
       credentials: true
-    }
+    },
+    allowEIO3: true
   });
 
   // 1. Authentication Middleware
