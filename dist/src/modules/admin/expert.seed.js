@@ -1,6 +1,5 @@
-// src/modules/admin/expert.seed.ts
 import 'dotenv/config';
-import { prisma } from '../../config/prisma.js';
+import { prisma } from '../../config/prisma';
 import { Role } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 async function main() {

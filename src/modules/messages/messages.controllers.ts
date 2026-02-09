@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { AuthRequest } from "../../middlewares/auth.middleware.js";
-import { MessageService } from "../messages/messages.services.js";
+import { AuthRequest } from "../../middlewares/auth.middleware";
+import { MessageService } from "../messages/messages.services";
 
 export class MessageController {
   static async send(req: AuthRequest, res: Response) {
@@ -11,7 +11,8 @@ export class MessageController {
       const message = await MessageService.sendMessage(
         requestId,
         req.user!.userId,
-        content
+        content,
+        req.app.get("io")
       );
       
       res.status(201).json(message);

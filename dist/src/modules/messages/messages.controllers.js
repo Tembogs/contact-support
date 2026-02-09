@@ -1,10 +1,10 @@
-import { MessageService } from "../messages/messages.services.js";
+import { MessageService } from "../messages/messages.services";
 export class MessageController {
     static async send(req, res) {
         try {
             const { requestId } = req.params;
             const { content } = req.body;
-            const message = await MessageService.sendMessage(requestId, req.user.userId, content);
+            const message = await MessageService.sendMessage(requestId, req.user.userId, content, req.app.get("io"));
             res.status(201).json(message);
         }
         catch (error) {

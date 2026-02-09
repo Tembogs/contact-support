@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+import prisma from "../../config/prisma";
 import { RequestStatus, Role } from "@prisma/client";
 export class MatchingService {
     // getting available expert
@@ -12,7 +12,8 @@ export class MatchingService {
             },
             orderBy: {
                 rating: "desc"
-            }
+            },
+            include: { user: true },
         });
     }
     // getting available expert to chat request

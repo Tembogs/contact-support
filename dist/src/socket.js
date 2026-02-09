@@ -1,14 +1,15 @@
-import { Server } from "socket.io";
-import { verifyToken } from "./middlewares/jwt.js";
-import prisma from "./config/prisma.js";
-import { MessageService } from "./modules/messages/messages.services.js";
+import { Server as SocketServer } from "socket.io";
+import { verifyToken } from "./middlewares/jwt";
+import prisma from "./config/prisma";
+import { MessageService } from "./modules/messages/messages.services";
 export function intheSocket(server) {
     const allowedOrigins = [
         'http://localhost:3000',
         'http://localhost:3001',
+        'https://chatroom-xi-lac.vercel.app',
         process.env.FRONTEND_URL || 'http://localhost:3000'
     ];
-    const io = new Server(server, {
+    const io = new SocketServer(server, {
         cors: {
             origin: (origin, callback) => {
                 if (!origin || allowedOrigins.includes(origin)) {
@@ -20,7 +21,8 @@ export function intheSocket(server) {
             },
             methods: ["GET", "POST"],
             credentials: true
-        }
+        },
+        allowEIO3: true
     });
     // 1. Authentication Middleware
     io.use(async (socket, next) => {
@@ -78,7 +80,7 @@ export function intheSocket(server) {
         // B. SEND MESSAGE LOGIC
         socket.on("Send-message", async ({ requestId, content }) => {
             try {
-                await MessageService.sendMessage(requestId, userId, content);
+                await MessageService.sendMessage(requestId, userId, content, io);
             }
             catch (err) {
                 socket.emit("error", err.message);
@@ -103,5 +105,6 @@ export function intheSocket(server) {
             console.log("❌ Socket disconnected:", userId);
         });
     });
+    // MessageService(io);
     return io;
 }

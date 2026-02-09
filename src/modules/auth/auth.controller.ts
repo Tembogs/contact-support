@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { AuthService } from "./auth.service.js";
-import { registerSchema, loginSchema } from "./auth.types.js";
+import { AuthService } from "./auth.service";
+import { registerSchema, loginSchema } from "./auth.types";
 
 export class AuthController {
   static async register(req: Request, res: Response) {

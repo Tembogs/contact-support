@@ -1,5 +1,4 @@
-import jwt from "jsonwebtoken";
-const JWT_SECRET = process.env.JWT_SECRET;
+import { verifyToken } from "./jwt";
 export const authMiddleware = (roles = []) => {
     return (req, res, next) => {
         const authHeader = req.headers.authorization;
@@ -9,11 +8,8 @@ export const authMiddleware = (roles = []) => {
         if (!token)
             return res.status(401).json({ message: "Token missing" });
         try {
-            const decoded = jwt.verify(token, JWT_SECRET);
+            const decoded = verifyToken(token);
             req.user = decoded;
-            console.log("--- AUTH DEBUG ---");
-            console.log("User Role in Token:", decoded.role);
-            console.log("Required Roles for Route:", roles);
             if (roles.length && !roles.includes(decoded.role)) {
                 return res.status(403).json({ message: "Forbidden: Insufficient permissions" });
             }

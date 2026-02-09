@@ -1,7 +1,7 @@
-import prisma from "../../config/prisma.js";
-import { io } from "../../server.js";
+import prisma from "../../config/prisma";
+import { Server } from "socket.io";
 export class MessageService {
-  static async sendMessage(requestId: string, senderId: string, content: string) {
+  static async sendMessage(requestId: string, senderId: string, content: string, io: Server) {
     
     //  Verify the request exists and the sender is the User or the assigned Expert
     const request = await prisma.supportRequest.findUnique({
@@ -31,6 +31,8 @@ export class MessageService {
     });
     
     io.to(requestId).emit("new-message", message);
+
+    return message;
   }
 
   static async getChatHistory(requestId: string, userId: string) {

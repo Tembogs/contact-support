@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+import prisma from "../../config/prisma";
 import { Role } from "@prisma/client";
 export class AdminService {
     // Promote a User to an Expert and initialize their Profile

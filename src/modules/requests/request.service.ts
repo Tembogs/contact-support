@@ -1,6 +1,6 @@
-import prisma from "../../config/prisma.js"
+import prisma from "../../config/prisma"
 import { RequestStatus,Prisma } from "@prisma/client"
-import { allowedTransitions } from "./request.state.js"
+import { allowedTransitions } from "./request.state"
 
 export class RequestService{
   static async createRequest(userId: string) {
@@ -51,7 +51,7 @@ export class RequestService{
           throw new Error("Unauthorised to close request");
         }
 
-        const updatedRequest = txt.supportRequest.update({
+        const updatedRequest = await txt.supportRequest.update({
           where: {id: requestedId},
           data:{
             status:nextStatus,

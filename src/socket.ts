@@ -1,10 +1,10 @@
-import { Server } from "socket.io";
-import http from "http";
-import { verifyToken } from "./middlewares/jwt.js";
-import prisma from "./config/prisma.js";
-import  {MessageService}  from "./modules/messages/messages.services.js"; 
+import { Server as SocketServer } from "socket.io";
+import { Server as HttpServer } from "http";
+import { verifyToken } from "./middlewares/jwt";
+import prisma from "./config/prisma";
+import  {MessageService}  from "./modules/messages/messages.services"; 
 
-export function intheSocket(server: http.Server) {
+export function intheSocket(server: HttpServer): SocketServer {
   const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
@@ -12,7 +12,7 @@ export function intheSocket(server: http.Server) {
     process.env.FRONTEND_URL || 'http://localhost:3000'
   ];
 
-  const io = new Server(server, {
+  const io = new SocketServer(server, {
     cors: {
       origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -26,6 +26,8 @@ export function intheSocket(server: http.Server) {
     },
     allowEIO3: true
   });
+
+ 
 
   // 1. Authentication Middleware
   io.use(async (socket, next) => {
@@ -45,7 +47,7 @@ export function intheSocket(server: http.Server) {
 
   // 2. Main Connection Handler
   io.on("connection", async (socket) => {
-    const userId = socket.data.user.userId;
+    const userId = socket.data.user.userId as string;
     console.log('✅ Socket connected:', userId);
     socket.join(`user_${userId}`);
 
@@ -90,10 +92,10 @@ export function intheSocket(server: http.Server) {
     });
 
     // B. SEND MESSAGE LOGIC
-    socket.on("Send-message", async ({ requestId, content }) => {
+    socket.on("Send-message", async ({ requestId, content }: { requestId: string; content: string }) => {
       try {
         
-        await MessageService.sendMessage(requestId, userId, content);
+        await MessageService.sendMessage( requestId, userId, content, io);
       } catch (err: any) {
         socket.emit("error", err.message);
       }
@@ -117,6 +119,7 @@ export function intheSocket(server: http.Server) {
       console.log("❌ Socket disconnected:", userId);
     });
   });
-
+  
+  // MessageService(io);
   return io;
 }

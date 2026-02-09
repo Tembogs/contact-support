@@ -1,7 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+if (process.env.NODE_ENV === "test" &&
+    process.env.DATABASE_URL?.includes("render.com")) {
+    throw new Error("🚨 TEST ENV CONNECTING TO PROD DB — ABORTED");
+}
+const url = process.env.DATABASE_URL;
+if (process.env.NODE_ENV === "test" && !url.includes("contact_support_test")) {
+    throw new Error("🚨 DATABASE_URL is not test database!");
+}
 const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: url,
 });
 const globalForPrisma = globalThis;
 export const prisma = globalForPrisma.prisma ??

@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js"
+import prisma from "../../config/prisma"
 import { Prisma, RequestStatus, Role } from "@prisma/client"
 
 
@@ -14,7 +14,8 @@ export class MatchingService {
     },
     orderBy:{
       rating:"desc"
-    }
+    },
+    include: { user: true },
    })
   }
 

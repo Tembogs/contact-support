@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { AuthRequest } from "../../middlewares/auth.middleware.js";
-import { ProfileService } from "./profile.services.js";
+import { AuthRequest } from "../../middlewares/auth.middleware";
+import { ProfileService } from "./profile.services";
 
 export class ProfileController {
   static async update(req: AuthRequest, res: Response) {

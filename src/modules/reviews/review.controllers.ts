@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ReviewService } from "./review.services.js";
-import { AuthRequest } from "../../middlewares/auth.middleware.js";
+import { ReviewService } from "./review.services";
+import { AuthRequest } from "../../middlewares/auth.middleware";
 
 export class ReviewController {
   static async addReview(req: any, res: Response) {

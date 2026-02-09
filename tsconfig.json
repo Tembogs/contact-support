@@ -9,6 +9,7 @@
     "rootDir": ".",         
     "noEmit": false,
     "skipLibCheck": true,
+    "types": ["node", "jest"]
   }
 }
 // {

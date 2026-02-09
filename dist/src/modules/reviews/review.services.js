@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+import prisma from "../../config/prisma";
 export class ReviewService {
     static async createReview(userId, requestId, rating, comment) {
         return await prisma.$transaction(async (tx) => {

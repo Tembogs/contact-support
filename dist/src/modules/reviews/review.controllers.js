@@ -1,4 +1,4 @@
-import { ReviewService } from "./review.services.js";
+import { ReviewService } from "./review.services";
 export class ReviewController {
     static async addReview(req, res) {
         try {

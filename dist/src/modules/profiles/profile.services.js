@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma.js";
+import prisma from "../../config/prisma";
 export class ProfileService {
     // Update expert bio and skills
     static async updateProfile(userId, data) {
