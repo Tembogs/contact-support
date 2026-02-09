@@ -1,5 +1,5 @@
 import "dotenv/config";
-import app from "./app";
+import app from "./app.js";
 import { createServer } from "http";
 import { intheSocket } from "./socket";
 
