@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma";
+import prisma from "../../config/prisma.js";
 import { Server } from "socket.io";
 export class MessageService {
   static async sendMessage(requestId: string, senderId: string, content: string, io: Server) {

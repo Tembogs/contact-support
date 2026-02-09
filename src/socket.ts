@@ -1,8 +1,8 @@
 import { Server as SocketServer } from "socket.io";
 import { Server as HttpServer } from "http";
-import { verifyToken } from "./middlewares/jwt";
-import prisma from "./config/prisma";
-import  {MessageService}  from "./modules/messages/messages.services"; 
+import { verifyToken } from "./middlewares/jwt.js";
+import prisma from "./config/prisma.js";
+import  {MessageService}  from "./modules/messages/messages.services.js"; 
 
 export function intheSocket(server: HttpServer): SocketServer {
   const allowedOrigins = [

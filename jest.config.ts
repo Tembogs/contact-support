@@ -1,5 +1,6 @@
-import type { Config } from "jest";
-const config: Config = {
+import type { JestConfigWithTsJest } from "ts-jest";
+
+const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   testEnvironment: "node",
 
@@ -15,6 +16,10 @@ const config: Config = {
 
   globalSetup: "<rootDir>/src/__tests__/globalSetup.ts",
   globalTeardown: "<rootDir>/src/__tests__/globalTeardown.ts",
+
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
 };
 
 export default config;

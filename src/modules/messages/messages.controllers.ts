@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { AuthRequest } from "../../middlewares/auth.middleware";
-import { MessageService } from "../messages/messages.services";
+import { AuthRequest } from "../../middlewares/auth.middleware.js";
+import { MessageService } from "../messages/messages.services.js";
 
 export class MessageController {
   static async send(req: AuthRequest, res: Response) {

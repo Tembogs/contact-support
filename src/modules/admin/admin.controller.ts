@@ -1,8 +1,8 @@
 import { Response } from "express";
-import { AuthRequest } from "../../middlewares/auth.middleware";
+import { AuthRequest } from "../../middlewares/auth.middleware.js";
 import { RequestStatus } from "@prisma/client"
-import prisma from "../../config/prisma";
-import { AdminService } from "./admin.services";
+import prisma from "../../config/prisma.js";
+import { AdminService } from "./admin.services.js";
 
 export class AdminController {
   

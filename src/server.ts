@@ -1,7 +1,7 @@
 import "dotenv/config";
 import app from "./app.js";
 import { createServer } from "http";
-import { intheSocket } from "./socket";
+import { intheSocket } from "./socket.js";
 
 export function createHttpServer() {
   const httpServer = createServer(app);

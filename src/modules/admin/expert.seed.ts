@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { prisma } from '../../config/prisma';
+import { prisma } from '../../config/prisma.js';
 import { Role } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 
