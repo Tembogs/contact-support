@@ -17,16 +17,33 @@ export class AuthController {
     }
   }
 
-  static async login(req: Request, res: Response) {
-    try {
-      const data = loginSchema.parse(req.body);
-      const result = await AuthService.login(data.email, data.password, data.role);
-      res.status(200).json(result);
-    } catch (err: any) {
-      console.error("❌ LOGIN ERROR:", err);
-      res.status(400).json({ 
-        message: err.message || "Invalid credentials" 
-      });
-    }
+  static async login (req: Request, res: Response) {
+  try {
+    const { email, password, role } = req.body;
+    const { user, token } = await AuthService.login(email, password, role);
+
+    // Set the cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    return res.json({ user }); 
+  } catch (error: any) {
+    return res.status(401).json({ message: error.message });
   }
+};
+
+static async logout(req: Request, res: Response) {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    path: '/'
+  });
+  return res.status(200).json({ message: "Logged out successfully" });
+};
+  
 }

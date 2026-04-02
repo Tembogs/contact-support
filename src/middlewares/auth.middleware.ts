@@ -1,27 +1,31 @@
-import {Request, Response, NextFunction} from "express"
+import { Response, NextFunction } from "express";
+import { Request } from "express";
 import { verifyToken } from "./jwt.js";
 
-
+// Custom interface to include the user data
 export interface AuthRequest extends Request {
-  user?: {userId:string, role:string};
+  user?: { userId: string; role: string };
 }
 
 export const authMiddleware = (roles: string[] = []) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ message: "Not Authorized" });
+    // 1. Get the token from cookies instead of headers
+    const token = req.cookies?.token; 
 
-    const token = authHeader.split(' ')[1]; 
-
-    if (!token) return res.status(401).json({ message: "Token missing" });
+    if (!token) {
+      return res.status(401).json({ message: "Not Authorized: No token provided" });
+    }
 
     try {
-      const decoded = verifyToken(token);
+      // 2. Verify the token
+      const decoded = verifyToken(token) as { userId: string; role: string };
       req.user = decoded;
 
-      if (roles.length && !roles.includes(decoded.role)) {
+      // 3. Check Permissions
+      if (roles.length > 0 && !roles.includes(decoded.role)) {
         return res.status(403).json({ message: "Forbidden: Insufficient permissions" });
       }
+
       next(); 
     } catch (error) {
       return res.status(401).json({ message: "Invalid or expired token" });
