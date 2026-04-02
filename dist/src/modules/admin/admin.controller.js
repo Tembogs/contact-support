@@ -1,6 +1,6 @@
 import { RequestStatus } from "@prisma/client";
-import prisma from "../../config/prisma";
-import { AdminService } from "./admin.services";
+import prisma from "../../config/prisma.js";
+import { AdminService } from "./admin.services.js";
 export class AdminController {
     // having access to request
     static async listRequests(req, res) {

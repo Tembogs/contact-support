@@ -8,5 +8,8 @@ const config = {
     setupFilesAfterEnv: ["<rootDir>/src/__tests__/setup.ts"],
     globalSetup: "<rootDir>/src/__tests__/globalSetup.ts",
     globalTeardown: "<rootDir>/src/__tests__/globalTeardown.ts",
+    moduleNameMapper: {
+        "^(\\.{1,2}/.*)\\.js$": "$1",
+    },
 };
 export default config;

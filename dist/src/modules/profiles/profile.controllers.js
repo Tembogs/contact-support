@@ -1,4 +1,4 @@
-import { ProfileService } from "./profile.services";
+import { ProfileService } from "./profile.services.js";
 export class ProfileController {
     static async update(req, res) {
         try {

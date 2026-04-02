@@ -1,4 +1,4 @@
-import { MessageService } from "../messages/messages.services";
+import { MessageService } from "../messages/messages.services.js";
 export class MessageController {
     static async send(req, res) {
         try {

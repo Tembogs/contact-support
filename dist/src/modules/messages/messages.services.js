@@ -1,4 +1,4 @@
-import prisma from "../../config/prisma";
+import prisma from "../../config/prisma.js";
 export class MessageService {
     static async sendMessage(requestId, senderId, content, io) {
         //  Verify the request exists and the sender is the User or the assigned Expert

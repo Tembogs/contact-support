@@ -1,11 +1,12 @@
 import prisma from "../../../config/prisma";
 import { ProfileService } from "../profile.services";
-import { Role } from "@prisma/client";
+import { Role, RequestStatus } from "@prisma/client";
 describe("ProfileService", () => {
-    let expertId;
     let userId;
+    let expertId;
+    let requestId;
     beforeAll(async () => {
-        // Clean tables
+        // Clean relevant tables
         await prisma.message.deleteMany({});
         await prisma.review.deleteMany({});
         await prisma.session.deleteMany({});
@@ -13,55 +14,60 @@ describe("ProfileService", () => {
         await prisma.skill.deleteMany({});
         await prisma.expertProfile.deleteMany({});
         await prisma.user.deleteMany({});
-        // Create expert user
-        const expert = await prisma.user.create({
-            data: {
-                email: "expert@test.com",
-                passwordHash: "123",
-                role: Role.EXPERT,
-            },
-        });
-        expertId = expert.id;
-        // Create regular user
+        // Create a user
         const user = await prisma.user.create({
-            data: {
-                email: "user@test.com",
-                passwordHash: "123",
-                role: Role.USER,
-            },
+            data: { email: "user@test.com", passwordHash: "123", role: Role.USER },
         });
         userId = user.id;
+        // Create an expert
+        const expert = await prisma.user.create({
+            data: { email: "expert@test.com", passwordHash: "123", role: Role.EXPERT },
+        });
+        expertId = expert.id;
+        // Expert profile
+        await prisma.expertProfile.create({
+            data: { userId: expertId, bio: "Expert Bio", isAvailable: true, rating: 0 },
+        });
+        // Create a closed support request for review
+        const request = await prisma.supportRequest.create({
+            data: { userId, expertId, status: RequestStatus.CLOSED },
+        });
+        requestId = request.id;
+        // Create a review tied to this request
+        await prisma.review.create({
+            data: {
+                rating: 5,
+                requestId: requestId,
+                expertId: expertId,
+                reviewerId: userId,
+            },
+        });
     });
     afterAll(async () => {
         await prisma.$disconnect();
     });
-    it("should create or update an expert profile with skills", async () => {
-        const profile = await ProfileService.updateProfile(expertId, {
-            bio: "I am an expert",
-            skills: ["TypeScript", "Node.js"],
+    it("should update expert profile with new bio and skills", async () => {
+        const updatedProfile = await ProfileService.updateProfile(expertId, {
+            bio: "Updated Bio",
+            skills: ["JavaScript", "TypeScript"],
         });
-        expect(profile).toBeDefined();
-        expect(profile.userId).toBe(expertId);
-        const skills = await prisma.skill.findMany({ where: { expertId: profile.id } });
-        expect(skills.map(s => s.name)).toEqual(expect.arrayContaining(["TypeScript", "Node.js"]));
+        expect(updatedProfile).toBeDefined();
+        expect(updatedProfile.bio).toBe("Updated Bio");
+        const skills = await prisma.skill.findMany({ where: { expertId: updatedProfile.id } });
+        expect(skills).toHaveLength(2);
+        expect(skills.map(s => s.name)).toContain("JavaScript");
     });
     it("should fetch the expert profile with calculated rating", async () => {
-        // Add a review to calculate rating
-        const review = await prisma.review.create({
-            data: {
-                rating: 5,
-                requestId: "req1",
-                expertId,
-                reviewerId: userId,
-            },
-        });
         const profile = await ProfileService.getProfile(expertId);
         expect(profile).toBeDefined();
+        expect(profile.bio).toBe("Updated Bio");
+        expect(profile.skills).toBeDefined();
         expect(profile.calculatedRating).toBe("5.0");
     });
-    it("should fetch a user profile", async () => {
-        const profile = await ProfileService.getUserProfile(userId);
-        expect(profile).toBeDefined();
-        expect(profile.email).toBe("user@test.com");
+    it("should fetch basic user profile", async () => {
+        const userProfile = await ProfileService.getUserProfile(userId);
+        expect(userProfile).toBeDefined();
+        expect(userProfile.email).toBe("user@test.com");
+        expect(userProfile.role).toBe("USER");
     });
 });
