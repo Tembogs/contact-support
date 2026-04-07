@@ -1,16 +1,17 @@
 import { verifyToken } from "./jwt.js";
 export const authMiddleware = (roles = []) => {
     return (req, res, next) => {
-        const authHeader = req.headers.authorization;
-        if (!authHeader)
-            return res.status(401).json({ message: "Not Authorized" });
-        const token = authHeader.split(' ')[1];
-        if (!token)
-            return res.status(401).json({ message: "Token missing" });
+        // 1. Get the token from cookies instead of headers
+        const token = req.cookies?.token;
+        if (!token) {
+            return res.status(401).json({ message: "Not Authorized: No token provided" });
+        }
         try {
+            // 2. Verify the token
             const decoded = verifyToken(token);
             req.user = decoded;
-            if (roles.length && !roles.includes(decoded.role)) {
+            // 3. Check Permissions
+            if (roles.length > 0 && !roles.includes(decoded.role)) {
                 return res.status(403).json({ message: "Forbidden: Insufficient permissions" });
             }
             next();
